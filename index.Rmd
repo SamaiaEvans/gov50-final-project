@@ -12,3 +12,11 @@ output:
 ## Project thoughts
 
 I am interested in exploring data related to the impact or correlation of certain factors of an academic environment on the performance of black students in primary and secondary education. This would likely be data collected from a natural observatory experiment. 
+
+```{r}
+chicago <- 
+  read.csv("chicago_public_schools.csv")
+
+chicago
+```
+
