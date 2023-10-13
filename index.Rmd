@@ -17,6 +17,7 @@ I am interested in exploring data related to the impact or correlation of certai
 chicago <- 
   read.csv("chicago_public_schools.csv")
 
-chicago
+head(chicago)
+
 ```
 
