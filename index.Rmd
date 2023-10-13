@@ -14,10 +14,15 @@ output:
 I am interested in exploring data related to the impact or correlation of certain factors of an academic environment on the performance of black students in primary and secondary education. This would likely be data collected from a natural observatory experiment. 
 
 ```{r}
+library(tidyverse)
+
 chicago <- 
   read.csv("chicago_public_schools.csv")
 
-head(chicago)
+chicago
+
+head(chicago) |> 
+  select(School.ID,ZIP.Code,Safety.Icon,Environment.Score,Rate.of.Misconducts..per.100.students.)
 
 ```
 
