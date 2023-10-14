@@ -1527,7 +1527,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"chicago_public_schools.csv"</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>chicago</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>School.ID</span>,<span class='va'>ZIP.Code</span>,<span class='va'>Safety.Icon</span>,<span class='va'>Environment.Score</span>,<span class='va'>Rate.of.Misconducts..per.100.students.</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>School.ID</span>,<span class='va'>ZIP.Code</span>,<span class='va'>Safety.Icon</span>,<span class='va'>Environment.Score</span>,<span class='va'>Rate.of.Misconducts..per.100.students.</span>, <span class='va'>Safety.Score</span>, <span class='va'>Parent.Environment.Score</span>, <span class='va'>College.Enrollment.Rate..</span>, <span class='va'>Community.Area.Name</span>, <span class='va'>Police.District</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>  School.ID ZIP.Code Safety.Icon Environment.Score
 1    609966    60623     Average                41
@@ -1536,14 +1536,30 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 4    609835    60651     Average                49
 5    610521    60636        Weak                51
 6    609818    60639        Weak                42
-  Rate.of.Misconducts..per.100.students.
-1                                    8.5
-2                                    4.3
-3                                    2.9
-4                                  153.9
-5                                   57.8
-6                                    9.8</code></pre>
+  Rate.of.Misconducts..per.100.students. Safety.Score
+1                                    8.5           40
+2                                    4.3           54
+3                                    2.9           70
+4                                  153.9           42
+5                                   57.8           35
+6                                    9.8           37
+  Parent.Environment.Score College.Enrollment.Rate..
+1                       45                       NDA
+2                       55                       NDA
+3                       52                       NDA
+4                       46                       NDA
+5                      NDA                       NDA
+6                       49                       NDA
+  Community.Area.Name Police.District
+1      SOUTH LAWNDALE              10
+2      BELMONT CRAGIN              25
+3      LINCOLN SQUARE              20
+4       HUMBOLDT PARK              25
+5      WEST ENGLEWOOD               7
+6      BELMONT CRAGIN              25</code></pre>
 </div>
+<h2 id="proposal">Proposal</h2>
+<p>Does a school environment and location influence student behaviors or performance in school? In this study, I plan to examine the extent to which the safety levels of a school environment impact student behavior, measured by the rates of misconduct amongst their student body. I hypothesize that there is a negative correlation between these two factors and that as a school’s safety level decreases, their rates of misconduct among their student body increases. As the safety levels of schools decreases, students feel less safe in school and therefore are more likely to allow these feelings to manifest in their own behviors, and may feel as though the lack of safety provides more of a reason ot act defensively and in noncompliance with school rules. My data is compromised of 556 public schools in the Chicago, Illinois area, and was used to create the report cards of Chicago Public Schools in the 2011-2012 school year. My unit of analysis are the individual schools, each identified by a unique ID number, and the explanatory variable in this study is the safety score of the school, measured on a scale of 1 - 99. In this variable, 1 represents a score that is at least 2.5 standard deviations below the given benchmark, and score of 99 represents a score that is at least 2.5 standard deviations above the benchmark. These values were determined by the “5Essentials” survey that is has been administered in Chicago Public Schools since 1990 to measure schools’ performances in different categories. My outcome variable is the rate of misconduct, representative of the number of misconducts per 100 students. If I observe that a school has higher rates of misconduct while aslo having lower safety ratings (closer to 1 than 99), then this would provide evidence in support of my hypothesis. If instead, I observe that a school has higher safety ratings (closer to 99 than 1), then this would provide evidence against my hypothesis. When I run my linear regression of the misconduct rates on the safety score variable, a negative correlation would indicate support for my hypothesis.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
