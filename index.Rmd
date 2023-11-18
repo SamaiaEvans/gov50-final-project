@@ -28,6 +28,8 @@ head(chicago) |>
 
 Does a school environment and location influence student behaviors or performance in school? In this study, I plan to examine the extent to which the safety levels of a school environment impact student behavior, measured by the rates of misconduct among their student body. I hypothesize that there is a negative correlation between these two factors and that as a school's safety level decreases, their rates of misconduct among their student body increases. As the safety levels of schools decreases, students feel less safe in school and therefore are more likely to allow these feelings to manifest in their own behaviors, and may feel as though the lack of safety provides more of a reason ot act defensively and in noncompliance with school rules. My data is compromised of 556 public schools in the Chicago, Illinois area, and was used to create the report cards of Chicago Public Schools in the 2011-2012 school year. My unit of analysis are the individual schools, each identified by a unique ID number, and the explanatory variable in this study is the safety score of the school, measured on a scale of 1 - 99. In this variable, 1 represents a score that is at least 2.5 standard deviations below the given benchmark, and score of 99 represents a score that is at least 2.5 standard deviations above the benchmark. These values were determined by the "5Essentials" survey that is has been administered in Chicago Public Schools since 1990 to measure schools' performances in different categories. My outcome variable is the rate of misconduct, representative of the number of misconducts per 100 students. If I observe that a school has higher rates of misconduct while also having lower safety ratings (closer to 1 than 99), then this would provide evidence in support of my hypothesis. If instead, I observe that a school has higher safety ratings (closer to 99 than 1), then this would provide evidence against my hypothesis. When I run my linear regression of the misconduct rates on the safety score variable, a negative correlation would indicate support for my hypothesis. 
 
+## Data Visualization
+
 ```{r}
 library(tidyverse)
 library(ggplot2)
@@ -41,4 +43,29 @@ chicago |>
   geom_smooth(method = "lm") +
   ylim(0, 100)
 ```
+
+## Results
+
+```{r}
+library(broom)
+library(infer)
+library(modelsummary)
+model1 <-
+  lm(Rate.of.Misconducts..per.100.students. ~ Safety.Score, data = chicago) 
+
+modelsummary(list(model1), gof_omit = 'DF|Deviance|R2|AIC|BIC|Log.Lik|RMSE|Num.Obs', statistic = NULL)
+
+```
+
+The linear model depicted in the data visualization supports a negative correlation between the schools' safety score and the rate of misconduct per 100 students, as there appears to be a negative slope and as the safety scores increase, the rate of misconducts decrease. This conclusion is supported when a linear regression is run, as the safety score coefficient is -0.5646. This means that for every singular point increase in the safety score of the schools, there is a predicted decrease in the rate of misconduct per 100 students by 0.5646. Additionally, the y-intercept, or the coefficient for the rate of misconduct per 100 students, is 50.0025. This means that when the safety score of a school is 0, it is predicted that the rate of student misconduct per 100 students is 50.0025. This is not incredibly helpful in addressing my question regarding the relationship between the safety of a school environment and student behavior or performance, as it only speaks to one side of this relationship (student behavior as measured by rates of misconduct), whereas we are investigating how both sides of the relationship interact in order to make a more causal inference. 
+
+
+
+
+
+
+
+
+
+
 

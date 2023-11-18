@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["chicago_public_schools.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["chicago_public_schools.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/kePrint-0.0.1/kePrint.js","index_files/lightable-0.0.1/lightable.css","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1473,6 +1473,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--/radix_placeholder_distill-->
   <script src="index_files/header-attrs-2.24/header-attrs.js"></script>
+  <script src="index_files/kePrint-0.0.1/kePrint.js"></script>
+  <link href="index_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
   <script src="index_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="index_files/popper-2.6.0/popper.min.js"></script>
   <link href="index_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1560,6 +1562,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <h2 id="proposal">Proposal</h2>
 <p>Does a school environment and location influence student behaviors or performance in school? In this study, I plan to examine the extent to which the safety levels of a school environment impact student behavior, measured by the rates of misconduct among their student body. I hypothesize that there is a negative correlation between these two factors and that as a school’s safety level decreases, their rates of misconduct among their student body increases. As the safety levels of schools decreases, students feel less safe in school and therefore are more likely to allow these feelings to manifest in their own behaviors, and may feel as though the lack of safety provides more of a reason ot act defensively and in noncompliance with school rules. My data is compromised of 556 public schools in the Chicago, Illinois area, and was used to create the report cards of Chicago Public Schools in the 2011-2012 school year. My unit of analysis are the individual schools, each identified by a unique ID number, and the explanatory variable in this study is the safety score of the school, measured on a scale of 1 - 99. In this variable, 1 represents a score that is at least 2.5 standard deviations below the given benchmark, and score of 99 represents a score that is at least 2.5 standard deviations above the benchmark. These values were determined by the “5Essentials” survey that is has been administered in Chicago Public Schools since 1990 to measure schools’ performances in different categories. My outcome variable is the rate of misconduct, representative of the number of misconducts per 100 students. If I observe that a school has higher rates of misconduct while also having lower safety ratings (closer to 1 than 99), then this would provide evidence in support of my hypothesis. If instead, I observe that a school has higher safety ratings (closer to 99 than 1), then this would provide evidence against my hypothesis. When I run my linear regression of the misconduct rates on the safety score variable, a negative correlation would indicate support for my hypothesis.</p>
+<h2 id="data-visualization">Data Visualization</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1576,6 +1579,48 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
+<h2 id="results">Results</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidymodels/infer'>infer</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://modelsummary.com'>modelsummary</a></span><span class='op'>)</span></span>
+<span><span class='va'>model1</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Rate.of.Misconducts..per.100.students.</span> <span class='op'>~</span> <span class='va'>Safety.Score</span>, data <span class='op'>=</span> <span class='va'>chicago</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='fu'><a href='https://modelsummary.com/reference/modelsummary.html'>modelsummary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>model1</span><span class='op'>)</span>, gof_omit <span class='op'>=</span> <span class='st'>'DF|Deviance|R2|AIC|BIC|Log.Lik|RMSE|Num.Obs'</span>, statistic <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+ (1)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+50.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Safety.Score
+</td>
+<td style="text-align:center;">
+−0.565
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The linear model depicted in the data visualization supports a negative correlation between the schools’ safety score and the rate of misconduct per 100 students, as there appears to be a negative slope and as the safety scores increase, the rate of misconducts decrease. This conclusion is supported when a linear regression is run, as the safety score coefficient is -0.5646. This means that for every singular point increase in the safety score of the schools, there is a predicted decrease in the rate of misconduct per 100 students by 0.5646. Additionally, the y-intercept, or the coefficient for the rate of misconduct per 100 students, is 50.0025. This means that when the safety score of a school is 0, it is predicted that the rate of student misconduct per 100 students is 50.0025. This is not incredibly helpful in addressing my question regarding the relationship between the safety of a school environment and student behavior or performance, as it only speaks to one side of this relationship (student behavior as measured by rates of misconduct), whereas we are investigating how both sides of the relationship interact in order to make a more causal inference.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
