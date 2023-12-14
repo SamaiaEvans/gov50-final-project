@@ -11,7 +11,18 @@ output:
 
 ## Introduction
 
-Does a school environment and location influence student behaviors or performance in school? 
+Does a school's safety environment influence student behaviors or student attendance in school? In this study, I utilize the data from 566 Chicago Public Schools to examine the extent to which the safety levels of a school environment impact student behavior, measured by the rates of misconduct among their student body. Additionally, I also examine the extent to which the safety levels of a school environment impact student attendance in school, as measured by the average percent daily student attendance. I hypothesize that there is a negative correlation between school safety and their student rates of misconduct, meaning, that as a school's safety level decreases, their rates of misconduct among their student body increases. In contrast, I hypothesize that there is a positive correlation between school safety and their student attendance according to the average percent of daily student attendance, meaning, that as a school's safety level decreases, their average percentage of daily student attendance also decreases. I predict that this relationship will be explained by the tendency for students to potentially feel less safe in school as school safety levels decrease, and will therefore be more likely to allow these feelings to manifest in their own behaviors, and may feel as though the lack of safety provides more of a reason to act defensively and in noncompliance with school rules. Moreover, as school safety levels decrease, students perception of a lack of safety will compromise their will to attend a school that they feel unsafe in, leading to a decrease in the percentage of average daily student attendance. 
+
+The investigation of these relationships is important because they can be helpful to educators and school districts in helping to predict their success regarding student behavior. If a relationship is identified between the safety of a school and their student behavior or student attendance, adjustments and implementations can be made to impact and increase positive student behaviors and student attendance levels. Still, if no relationship is identified between school safety and student behavior or student performance, school officials will know to potentially look at other factors in attempt to locate different relationships that will allow them to increase positive student behaviors and attendance levels. 
+
+## Data 
+
+Collected in a natural observational study in which Chicago Public Schools serve as a case study for general American education, my data is composed of 556 public schools in the Chicago, Illinois area, and was used to create the report cards of Chicago Public Schools in the 2011-2012 school year. My unit of analysis are the individual schools, each identified by a unique ID number, and the explanatory variable in this study is the safety score of the school, measured on a scale of 1 - 99, and evaluated by how students perceive the safety of their school environment to be. In this variable, 1 represents a score that is at least 2.5 standard deviations below the given benchmark, and score of 99 represents a score that is at least 2.5 standard deviations above the benchmark. These values were determined by the "5Essentials" survey that is has been administered in Chicago Public Schools since 1990 to measure schools' performances in different categories. My first outcome variable is the rate of misconduct, representative of the number of misconducts per 100 students. My second outcome variable is the average percentage of schools daily student attendance. 
+
+Regarding my first response variable, I will have evidence in support of my hypothesis that there is a negative correlation between school safety and student misconduct if I observe that a school has higher rates of misconduct while also having lower safety scores (closer to 1 than 99), or if I run a linear regression of the misconduct rates on the safety score variable and find a negative correlation. If instead, I observe that a school has higher safety ratings (closer to 99 than 1) and high rates of student misconduct, or find a positive correlation between the two variables, then this would provide evidence against my hypothesis. Regarding my second response variable, if I observe that a school has low average percentages of daily student attendance while also having lower safety scores (closer to 1 than 99), then this would provide evidence in support of my hypothesis of there being a positive correlation between the two variables. I would also have evidence in support of my hypothesis if I run a linear regression of the percentage of schools' average daily student attendance on the safety score variable and find a positive correlation. If instead, I observe that schools have higher percentages of average daily student attendance while also having lower safety scores, or find a negative correlation between the two variables, I will have evidence against my hypothesis of there being a positive correlation between school safety and student attendance. 
+
+
+The following table is a six-school sample that represents the data that is collected from each of the 566 CPS schools. 
 
 
 ```{r}
@@ -21,13 +32,64 @@ chicago <-
   read.csv("chicago_public_schools.csv")
 
 head(chicago) |> 
-  select(School.ID, ZIP.Code, Safety.Icon, Rate.of.Misconducts..per.100.students., Safety.Score, CPS.Performance.Policy.Level, Community.Area.Name, Police.District) |> 
-  knitr::kable(col.names = c("School ID", "School Zip Code", "Safety Icon", "Rate of Misconduct Per 100 Students", "Safety Score (1-99)", "CPS Performance Policy Level (1-5)", "Community Area Name", "Police District"))
+  select(School.ID, ZIP.Code, Safety.Icon, Rate.of.Misconducts..per.100.students., Safety.Score, Average.Student.Attendance, Community.Area.Name, Police.District) |> 
+  knitr::kable(col.names = c("School ID", "School Zip Code", "Safety Icon", "Rate of Misconduct Per 100 Students", "Safety Score (1-99)", "Average Daily Student Attendance Percentage", "Community Area Name", "Police District"))
 
 ```
-## Data 
+The following graph represents the distribution of the rates of misconduct per 100 students for all CPS schools. 
 
 ```{r}
+chicago |> 
+  select(Rate.of.Misconducts..per.100.students.)|> 
+  ggplot(mapping = aes(x = Rate.of.Misconducts..per.100.students.)) + 
+  geom_histogram() + 
+  labs(
+    x = "Rate of Misconduct per 100 Students", 
+    y = "Count", 
+    subtitle = "Across 513 Chicago Public Schools in the 2011-2012 School Year", 
+    title = "Rates of Misconduct per 100 Students in CPS Schools") +
+  geom_vline(aes(xintercept = mean(Rate.of.Misconducts..per.100.students.)),
+             color = "indianred") +
+  geom_vline(aes(xintercept = median(Rate.of.Misconducts..per.100.students.)),
+             color = "dodgerblue")
+
+
+```
+
+The distribution of the Rates of Misconduct per 100 Students throughout CPS is heavily skewed right, with a median of 12.25 misconducts per 100 students, and a mean of 21.08587 misconducts per 100 students. Additionally, the standard deviation of the Rates of Misconduct per 100 Students throughout CPS is 27.54383 misconducts per 100 students. 
+
+
+The following graph represents the distribution of the Average Daily Student Attendance Percentages for all CPS schools with applicable data. 
+
+```{r}
+chicago |> 
+  select(Average.Student.Attendance)|> 
+  drop_na(Average.Student.Attendance) |>
+  ggplot(mapping = aes(x = Average.Student.Attendance)) + 
+  geom_histogram() + 
+  labs(
+    x = "Average Daily Student Attendance Percentage", 
+    y = "Count", 
+    subtitle = "Across 565 Chicago Public Schools in the 2011-2012 School Year", 
+    title = "Average Student Attendance in CPS Schools") +
+  geom_vline(aes(xintercept = mean(Average.Student.Attendance)),
+             color = "indianred") +
+  geom_vline(aes(xintercept = median(Average.Student.Attendance)),
+             color = "dodgerblue")
+
+
+```
+The distribution of Average Daily Student Attendance Percentage in CPS is heavily skewed left, with a median of 94.4% average daily student attendance and a mean of 92.31381 average daily student attendance. Additionally, the standard deviation the of Average Daily Student Attendance Percentage in CPS is 5.993053%.
+
+## Results
+
+The following graph represents the linear relationship between school safety scores and the rate of student misconduct in schools (per 100 students) for all schools with applicable data. 
+
+```{r}
+library(broom)
+library(infer)
+library(modelsummary)
+
 library(tidyverse)
 library(ggplot2)
 
@@ -36,25 +98,63 @@ chicago |>
   drop_na(Safety.Score, Rate.of.Misconducts..per.100.students.) |>
   ggplot(mapping = aes( x = Safety.Score , y = Rate.of.Misconducts..per.100.students.)) + 
   geom_point(alpha = 0.5) + 
-  labs(x = "Safety Score (1-99)", y = "Rate of Misconduct Per 100 Students", title = "School Safety Score v. School Misconduct Rate", subtitle = " Across 513 Chicago Public Schools in the 2011-2012 School Year") + 
+  labs(x = "Safety Score (1-99)",
+       y = "Rate of Misconduct Per 100 Students",
+       title = "School Safety Score v. School Misconduct Rate",
+       subtitle = " Across 513 Chicago Public Schools in the 2011-2012 School Year") + 
   geom_smooth(method = "lm") +
   ylim(0, 100) 
-```
 
-## Results
 
-```{r}
-library(broom)
-library(infer)
-library(modelsummary)
 model1 <-
   lm(Rate.of.Misconducts..per.100.students. ~ Safety.Score, data = chicago) 
 
-modelsummary(list(model1), gof_omit = 'DF|Deviance|R2|AIC|BIC|Log.Lik|RMSE|Num.Obs', statistic = NULL)
+modelsummary(list(model1), gof_omit = 'DF|Deviance|R2|AIC|BIC|Log.Lik|RMSE|Num.Obs', statistic = NULL) 
+
+tidy(summary(model1)) |> 
+  select(term, p.value) |> 
+  filter(term == "Safety.Score")
 
 ```
 
+The first linear model depicted in the data visualization supports a negative correlation between the schools' safety score and the rate of misconduct per 100 students, as there appears to be a negative slope and as the safety scores increase, the rate of misconducts decrease. This conclusion is supported when a linear regression is run, as the safety score coefficient is -0.5646. This means that for every singular point increase in the safety score of the schools, there is a predicted decrease in the rate of misconduct per 100 students by 0.5646. Additionally, the y-intercept, or the coefficient for the rate of misconduct per 100 students, is 50.0025. This means that when the safety score of a school is 0, it is predicted that the rate of student misconduct per 100 students is 50.0025. This is not incredibly helpful in addressing my question regarding the relationship between the safety of a school environment and student behavior or performance, as it only speaks to one side of this relationship (student behavior as measured by rates of misconduct), whereas we are investigating how both sides of the relationship interact in order to make a more causal inference. 
 
+Moreover, the p-value of the significance test is < 2.2e-16, which at an alpha level of 0.05, is statistically significant because p < alpha, meaning that we can safely reject the null hypothesis of there being no linear relationship between the safety scores of schools and the rates of misconduct per 100 students. 
+
+
+The following graph represents the linear relationship between school safety scores and their average daily student attendance for all schools with applicable data. 
+
+
+```{r}
+
+chicago |> 
+  select(Average.Student.Attendance, Safety.Score) |> 
+  drop_na(Safety.Score, Average.Student.Attendance) |>
+  ggplot(mapping = aes(x = Safety.Score , y = Average.Student.Attendance)) + 
+  geom_point(alpha = 0.3) + 
+  labs(x = "Safety Score (1-99)",
+       y = "Average Percentage of Daily Student Attendance",
+       title = "School Safety Score v. Average Percentage of Daily Student Attendance", 
+       subtitle = " Across 565 Chicago Public Schools in the 2011-2012 School Year") + 
+  geom_smooth(method = "lm") +
+  ylim(55, 100)
+
+model2 <- lm(Average.Student.Attendance ~ Safety.Score, data = chicago)
+
+modelsummary(list(model2), gof_omit = 'DF|Deviance|R2|AIC|BIC|Log.Lik|RMSE|Num.Obs', statistic = NULL) 
+
+tidy(summary(model2)) |> 
+  select(term, p.value) |> 
+  filter(term == "Safety.Score")
+```
+
+The second linear model depicted in the data visualization supports a positive correlation between the school's safety score and the average daily student attendance percentage, as there appears to be a positive slope and as the safety scores increase, the daily student attendance percentages also slightly increase. This conclusion is supported when a linear regression is run, as the safety score coefficient is 0.094. This means that for every singular point increase in the safety score of the schools, there is a predicted 0.094 percentage point increase in the average daily student attendance of schools. Additionally, the y-intercept, or the coefficient for the average daily student attendance is 87.863. This means that when the safety score of a school is 0, it is predicted that the average daily student attendance percentage is 87.863%. This is helpful in addressing my question regarding the relationship between the safety of a school environment and student attendance because it indicates that even when a school has a safety score of 0, the percent of average daily student attendance is still over 80%, suggesting a minor and probable non-causal relationship between the two factors. 
+
+Moreover, the p-value of the significance test is 2.591e-15, which at an alpha level of 0.05, is statistically significant because p < alpha, meaning that we can safely reject the null hypothesis of there being no linear relationship between the safety scores of schools and the average daily school attendance percentages. 
+
+## Conclusion
+
+Based on the results, my hypotheses is strongly supported in that there is a negative linear relationship between school safety scores and the rates of student misconduct in Chicago Public Schools. This is evidenced by the negative coefficient to the school safety score, the negative slope on the linear model represented in the data visualization depicting the relationship between school safety scores and student rates of misconduct, and the statistical significance found in this relationship. Similarly, my secondary hypothesis is also strongly supported in that there is a positive linear relationship between school safety scores and the average daily student attendance percentage in Chicago Public Schools. This is evidenced by the positive coefficient to the school safety score found in the linear regression, the positive slope on the linear model represented in the data visualization depicting the relationship between school safety scores and student attendance in Chicago Public Schools, and the statistical significance found in this relationship. However, there are limitations to my study in that there could potentially be other confounding factors influencing both school safety and rates of misconduct, such as the location of the school, and the general culture of violence in the area seeing that this factor could simultaneously increase or decrease school safety scores and rates of misconduct. This factor of location could also confound school safety and school attendance, as location could introduce other factors that influence students to miss or attend school, as well as perceive a lack of safety in their school environment. Additionally, no causal relationship can be surely drawn from this study as there was no random sampling and there is no experimental study with control and treatment variables. If I had more time and money, my study could be improved by introducing a before and after design in which I compare the observations made before and after a year (or other period of time) in Chicago schools in order to gain an understanding regarding whether we can infer, or have reason to further investigate, whether the explanatory variable of school safety scores has a large influence on the response variables of student misconduct rates and school attendance rates, or if the relationship between these explanatory and response variables varies inconsistently over time. 
 
 
 
